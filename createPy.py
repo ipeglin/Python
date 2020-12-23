@@ -23,9 +23,8 @@ clear()
 for i in modules:
     imports += "import " + i + "\n"
 
-# Trying to use the pass system argument
+# Trying to use the passed system argument from the command line
 try:
-    # There was an stdin arg passed in the command line
     file_name = str(sys.argv[1])
 except:
     # If not. Ask for the wanted name of the python file
