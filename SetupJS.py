@@ -19,10 +19,12 @@ html_content = '''<!DOCTYPE html>
 </html>
 '''
 
+
 # Creating and writing to index.html file
 html_file = open("index.html", "w+")
 html_file.write(html_content)
 html_file.close()
+
 
 # Creating JS file
 js_file = open("index.js", "w+")
