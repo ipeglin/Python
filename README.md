@@ -7,3 +7,6 @@ with a single click on the python file.
 
 # cleanDir.py
 A script that automatically organizes the directory that the script is currently placed in. The directories that the script will place files into are pre-set, and the script needs to be modified if you want others.
+
+# cleanDirV2.py
+An updated version of cleanDir.py where the code is more managable for future development and folder additions. The program also features a user feedback which is bit easier to read.
