@@ -16,13 +16,6 @@ EXT = {
     "Zip-Files": [".zip"] # Zipped folders
 }
 
-# Setting the parent folder of the script
-parent_folder = f"{PurePath(os.path.realpath(__file__)).parents[0]}"
-
-# Changing the directory path to the currect path of the script. This makes sure the files and dirs are created in the correct folder
-os.chdir(parent_folder)
-
-# Get the key / folder name of the extension
 def get_key(val):
     for i in EXT.items():
         if (val in i[1]):
@@ -30,11 +23,26 @@ def get_key(val):
 
     return "NULL"
 
+folder_names = []
+
+for i in EXT.items():
+    folder_names.append(get_key(i[1][len(i[1]) - 1]))
+
+# Setting the parent folder of the script
+parent_folder = f"{PurePath(os.path.realpath(__file__)).parents[0]}"
+
+# Changing the directory path to the currect path of the script. This makes sure the files and dirs are created in the correct folder
+os.chdir(parent_folder)
+
+# Get the key / folder name of the extension
+
 # List all the files in the current directory
 files = os.listdir(parent_folder)
 
-# Create directories if they don't exist
 nr_dirs_created = 0
+nr_moved_files = 0
+
+# Create directories if they don't exist
 
 print("\n========== CREATING FOLDERS ==========\n")
 
@@ -57,10 +65,14 @@ if not (os.path.isdir(f"{parent_folder}/Other")):
     os.mkdir(f"{parent_folder}/Other")
     nr_dirs_created += 1 # Increment the number of directories created
 
+folder_names.append("Folders")
+folder_names.append("Other")
+
 print("\n======================================\n")
 
 # Print to console how many directories were created
 print(f"{nr_dirs_created}/{len(EXT.keys()) + 2} Directories created successfully")
+
 
 print("\n============ MOVING FILES ============\n")
 
@@ -85,10 +97,12 @@ for f in files:
 
             # Moving the file
             shutil.move(f, f"./{key}/{f}")
+            nr_moved_files += 1
 
         if key and key not in EXT.keys():
             print(f"MOVING '{f}'  ==>  './Other/'")
             shutil.move(f, f"./Other/{f}")
+            nr_moved_files += 1
 
     # If the item if a directory... Do this
     else:
@@ -96,13 +110,18 @@ for f in files:
         if (os.path.isdir(f"{parent_folder}/{name}")):
             if not (name in EXT.keys() and name == "Folders" and name == "Other" and "git" in f):
 
-                # Print to console what you are moving
-                print(f"MOVING '{f}'  ==>  './Folders/'")
+                if not name in folder_names:
+                    
+                    # Print to console what you are moving
+                    print(f"MOVING '{f}'  ==>  './Folders/'")
 
-                # Moving the directory
-                shutil.move(f, f"./Folders/{f}")
+                    # Moving the directory
+                    shutil.move(f, f"./Folders/{f}")
+                    nr_moved_files += 1
                 
 
-print("\n======================================\n")
+print("\n======================================")
 
-print("#####  CLEANUP COMPLETED  #####")
+print(f"\n\tFILES MOVED: #{nr_moved_files}")
+
+print("\n========  CLEANUP COMPLETED  =========")
