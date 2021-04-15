@@ -5,15 +5,15 @@ from pathlib import PurePath
 # Folders with their respective file extensions
 EXT = {
     "Audio": [".wav", ".mp3", ".raw", ".wma", ".ogg"], # Audio files
-    "Video": [".mp4", ".m4a", ".m4v", ".f4v", ".f4a", ".m4b", ".m4r", ".f4b", ".mov", ".avi", ".wmv", ".flv"], # Video files
-    "Images": [".jpeg", ".jpg", ".png", ".svg", ".gif", ".bmp", ".jfif"], # Image files
+    "C++": [".cpp"], # C++ files
     "Documents": [".txt", ".pdf", ".doc", ".docx", ".odt", ".html"], # Document files
     "Executables": [".exe"], # Executable files
+    "Images": [".jpeg", ".jpg", ".png", ".svg", ".gif", ".bmp", ".jfif", ".PNG"], # Image files
     "Installer Files": [".msi"], # Installer files
-    "Zip-Files": [".zip"], # Zipped folders
-    "Python": [".py"], # Python script files
     "JavaScript": [".js", ".txs", ".json"], # JavaScript files
-    "C++": [".cpp"] # C++ files
+    "Python": [".py"], # Python script files
+    "Video": [".mp4", ".m4a", ".m4v", ".f4v", ".f4a", ".m4b", ".m4r", ".f4b", ".mov", ".avi", ".wmv", ".flv"], # Video files
+    "Zip-Files": [".zip"] # Zipped folders
 }
 
 # Setting the parent folder of the script
@@ -74,30 +74,30 @@ for f in files:
     if extension:
 
         # If the file is the script itself... Skip
-        if f == os.path.basename(__file__):
+        if f == os.path.basename(__file__) or "git" in f:
             continue
 
         key = get_key(extension)
 
         if key != "NULL":
             # Print to console what you are moving
-            print(f"MOVING '{f}' TO './{key}/{f}'")
+            print(f"MOVING '{f}'  ==>  './{key}/'")
 
             # Moving the file
             shutil.move(f, f"./{key}/{f}")
 
         if key and key not in EXT.keys():
-            print(f"MOVING '{f}' TO './Other/{f}'")
+            print(f"MOVING '{f}'  ==>  './Other/'")
             shutil.move(f, f"./Other/{f}")
 
     # If the item if a directory... Do this
     else:
         
         if (os.path.isdir(f"{parent_folder}/{name}")):
-            if (name not in EXT.keys() and name != "Folders" and name != "Other"):
+            if not (name in EXT.keys() and name == "Folders" and name == "Other" and "git" in f):
 
                 # Print to console what you are moving
-                print(f"MOVING '{f}' TO './Folders/{f}'")
+                print(f"MOVING '{f}'  ==>  './Folders/'")
 
                 # Moving the directory
                 shutil.move(f, f"./Folders/{f}")
