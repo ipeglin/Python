@@ -6,9 +6,10 @@ from pathlib import PurePath
 EXT = {
     "Audio": [".wav", ".mp3", ".raw", ".wma", ".ogg"], # Audio files
     "Video": [".mp4", ".m4a", ".m4v", ".f4v", ".f4a", ".m4b", ".m4r", ".f4b", ".mov", ".avi", ".wmv", ".flv"], # Video files
-    "Images": [".jpeg", ".jpg", ".png", ".svg", ".gif", ".bmp"], # Image files
+    "Images": [".jpeg", ".jpg", ".png", ".svg", ".gif", ".bmp", ".jfif"], # Image files
     "Documents": [".txt", ".pdf", ".doc", ".docx", ".odt", ".html"], # Document files
     "Executables": [".exe"], # Executable files
+    "Installer Files": [".msi"], # Installer files
     "Zip-Files": [".zip"], # Zipped folders
     "Python": [".py"], # Python script files
     "JavaScript": [".js", ".txs", ".json"], # JavaScript files
@@ -27,7 +28,7 @@ def get_key(val):
         if (val in i[1]):
             return i[0]
 
-    return "key doesn't exist"
+    return "NULL"
 
 # List all the files in the current directory
 files = os.listdir(parent_folder)
@@ -76,11 +77,18 @@ for f in files:
         if f == os.path.basename(__file__):
             continue
 
-        # Print to console what you are moving
-        print(f"MOVING '{f}' TO './{get_key(extension)}/{f}'")
+        key = get_key(extension)
 
-        # Moving the file
-        shutil.move(f, f"./{get_key(extension)}/{f}")
+        if key != "NULL":
+            # Print to console what you are moving
+            print(f"MOVING '{f}' TO './{key}/{f}'")
+
+            # Moving the file
+            shutil.move(f, f"./{key}/{f}")
+
+        if key and key not in EXT.keys():
+            print(f"MOVING '{f}' TO './Other/{f}'")
+            shutil.move(f, f"./Other/{f}")
 
     # If the item if a directory... Do this
     else:
@@ -93,11 +101,7 @@ for f in files:
 
                 # Moving the directory
                 shutil.move(f, f"./Folders/{f}")
-        
-        else:
-            if (f != os.path.basename(__file__)):
-                print(f"MOVING '{f}' TO './Other/{f}'")
-                shutil.move(f, f"./Other/{f}")
+                
 
 print("\n======================================\n")
 
