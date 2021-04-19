@@ -73,6 +73,12 @@ print("\n======================================\n")
 # Print to console how many directories were created
 print(f"{nr_dirs_created}/{len(EXT.keys()) + 2} Directories created successfully")
 
+longest_folder_length = 0
+
+for folder_name in folder_names:
+    name_length = len(folder_name)
+    if name_length > longest_folder_length:
+        longest_folder_length = name_length
 
 print("\n============ MOVING FILES ============\n")
 
@@ -93,14 +99,15 @@ for f in files:
 
         if key != "NULL":
             # Print to console what you are moving
-            print(f"MOVING '{f}'  ==>  './{key}/'")
+            key_buffer = longest_folder_length - len(key)
+            print(f"TARGET './{key}/'{' ' * key_buffer} | MOVING '{f}'")
 
             # Moving the file
             shutil.move(f, f"./{key}/{f}")
             nr_moved_files += 1
 
         if key and key not in EXT.keys():
-            print(f"MOVING '{f}'  ==>  './Other/'")
+            print(f"TARGET './Other/'{' ' * (longest_folder_length - 5)} | MOVING '{f}'")
             shutil.move(f, f"./Other/{f}")
             nr_moved_files += 1
 
@@ -113,7 +120,7 @@ for f in files:
                 if not name in folder_names:
                     
                     # Print to console what you are moving
-                    print(f"MOVING '{f}'  ==>  './Folders/'")
+                    print(f"TARGET './Folders/'{' ' * (longest_folder_length - 7)} | MOVING '{f}'")
 
                     # Moving the directory
                     shutil.move(f, f"./Folders/{f}")
