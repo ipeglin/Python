@@ -86,7 +86,7 @@ for f in files:
     if extension:
 
         # If the file is the script itself... Skip
-        if f == os.path.basename(__file__) or "git" in f:
+        if f == os.path.basename(__file__) or "git" in f or f == "Directory Cleanup.ps1":
             continue
 
         key = get_key(extension)
@@ -125,3 +125,5 @@ print("\n======================================")
 print(f"\n\tFILES MOVED: #{nr_moved_files}")
 
 print("\n========  CLEANUP COMPLETED  =========")
+
+end = input("")
